@@ -183,11 +183,6 @@ def getShortestWays(parent : str, child : str):
         except exception.NetworkXNoPath:
             return []
 
-def getJSONShortestWays(parent : str, child : str):
+def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
-    waysJSON={}
-    index=0
-    for way in ways:
-        waysJSON["way"+str(index)]=way
-        index+=1
-    return waysJSON
+    return {ways[number-1]},len(ways)
