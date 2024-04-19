@@ -184,5 +184,5 @@ def getShortestWays(parent : str, child : str):
 
 def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
-    jsonways=[len(ways)]+ways[number-1]
+    jsonways={"way":ways[number-1],"length":len(ways)}
     return jsonways
