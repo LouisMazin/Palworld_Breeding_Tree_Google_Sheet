@@ -1,12 +1,15 @@
 from networkx import all_shortest_paths, exception, DiGraph
-from csv import reader as read
+from graphviz import Digraph
+from os import path,environ,remove,listdir
+import ImageCrop
+environ["PATH"] += path.abspath(".\\Graphviz\\bin")+";"
 ##This file contains function to get the list of all shortests
 ##ways between two pals
 ##
 ##It uses breed.csv and return a list of png paths
 
 #function to get a dict with pals and their childrens
-def getCsvContent(file : str):
+def getCsvContent():
     pals={}
     reader=[["Lamball","Lamball","Lamball","Mau","Vixy","Lifmunk","Foxparks","Lifmunk","Jolthog","Ribunny","Sparkit","Verdash","Hangyu","Hangyu","Pengullet","Cattiva","Lifmunk","Mau","Lifmunk","Cattiva","Pengullet","Swee","Bristla","Tocotoco","Depresso","Mau","Cremis","Wixen","Kelpsea","Flambelle","Jolthog","Woolipop","Foxparks","Flopie","Killamari","Vixy","Vixy","Loupmoon","Caprity","Fuack","Dazzi","Nox","Woolipop","Woolipop","Loupmoon","Hoocrates","Galeclaw","Galeclaw","Fenglope","Rushoar","Nox","Kelpsea Ignis","Killamari","Swee","Dazzi","Tanzee","Tanzee","Daedream","Kelpsea","Kelpsea Ignis","Dumud","Verdash","Depresso","Lovander","Rushoar","Cawgnito","Lunaris","Eikthyrdeer","Digtoise","Nox","Lunaris","Maraith","Tocotoco","Killamari","Maraith","Rushoar","Robinquill","Felbat","Ribunny","Wixen","Lunaris","Dazzi","Lifmunk","Direhowl","Gorirat","Direhowl","Digtoise","Eikthyrdeer","Gobfin","Bristla","Daedream","Kelpsea","Loupmoon","Felbat","Felbat","Jolthog","Jolthog","Fenglope","Chillet","Gobfin","Beegarde","Reindrix","Celaray","Wixen","Rooby","Rushoar","Dumud","Digtoise","Fenglope","Loupmoon","Melpaca","Reindrix","Loupmoon","Fenglope","Mozzarina","Fuddler","Gumoss","Mozzarina","Rayhound","Kitsun","Dinossom","Broncherry","Robinquill","Melpaca","Dumud","Foxcicle","Tombat","Kitsun","Broncherry","Digtoise","Eikthyrdeer","Chillet","Foxcicle","Petallia","Foxcicle","Arsox","Arsox","Petallia"],
     ["Cattiva","Lamball","Cattiva","Mau","Vixy","Lifmunk","Foxparks","Lifmunk","Pengullet","Ribunny","Flambelle","Verdash","Hangyu","Sparkit","Pengullet","Cremis","Lifmunk","Mau","Hangyu","Cattiva","Tocotoco","Killamari","Bristla","Tocotoco","Jolthog","Lamball","Vixy","Wixen","Kelpsea","Foxparks","Jolthog","Woolipop","Hoocrates","Kelpsea Ignis","Flopie","Lifmunk","Vixy","Loupmoon","Eikthyrdeer","Bristla","Woolipop","Nox","Woolipop","Nox","Lovander","Depresso","Galeclaw","Robinquill","Fenglope","Rushoar","Nox","Kelpsea Ignis","Killamari","Swee","Dazzi","Tanzee","Gumoss","Daedream","Tanzee","Kelpsea","Dumud","Fenglope","Depresso","Caprity","Rushoar","Beegarde","Lunaris","Mozzarina","Digtoise","Wixen","Lunaris","Maraith","Tocotoco","Killamari","Rushoar","Rushoar","Felbat","Felbat","Swee","Rooby","Lunaris","Dazzi","Lifmunk","Direhowl","Gorirat","Vaelet","Digtoise","Eikthyrdeer","Cawgnito","Ribunny","Fuddler","Kelpsea","Loupmoon","Felbat","Verdash","Jolthog","Jolthog","Fenglope","Arsox","Gobfin","Direhowl","Celaray","Broncherry","Wixen","Maraith","Leezpunk","Melpaca","Digtoise","Loupmoon","Loupmoon","Reindrix","Reindrix","Loupmoon","Fenglope","Dumud","Fuddler","Daedream","Mozzarina","Rayhound","Kitsun","Chillet","Broncherry","Robinquill","Melpaca","Melpaca","Tombat","Tombat","Kitsun","Digtoise","Kitsun","Eikthyrdeer","Chillet","Foxcicle","Foxcicle","Foxcicle","Arsox","Petallia","Petallia"],
@@ -159,30 +162,54 @@ def getPalsGraph(csvContent : dict):
 #function to get all the parents of a child
 def findParents(pal : str, enfant : str):
     secondParents=[]
-    childrens=getCsvContent("data.csv")[pal]
+    csv=getCsvContent().keys()
+    childrens=getCsvContent()[pal]
     palList=[]
-    with open("data.csv", 'r',encoding='utf-8') as f:
-        reader = read(f,delimiter=',')
-        for row in reader:
-            palList.append(row[0])
+    for row in csv:
+        palList.append(row)
     for childrenIndex in range(len(childrens)):
         if childrens[childrenIndex]==enfant:
             secondParents.append(palList[childrenIndex])
+    print(secondParents)
     return secondParents
 
 #function to get the shorstests ways between a parent and a child
 def getShortestWays(parent : str, child : str):
     if(parent=="Select a parent" or child=="Select a child"):
         return []
-    if(child in getCsvContent("data.csv")[parent]):
+    if(child in getCsvContent()[parent]):
         return [[parent,child]]
     else:
         try :
-            return list(all_shortest_paths(getPalsGraph(getCsvContent("data.csv")),parent,child))
+            return list(all_shortest_paths(getPalsGraph(getCsvContent()),parent,child))
         except exception.NetworkXNoPath:
             return []
 
+#function to create the graph corresponding to a way
+def getShortestGraphs(way : list,nbr : int):
+    if(len(way)==0):
+        return "./Icons/None.png"
+    graph=Digraph(node_attr={'shape': 'box','label' : ''})
+    graph.attr(ratio='1',fixedsize='true',size='9')
+    for i in range(len(way)-1):
+        parentsList=findParents(way[i],way[i+1])
+        parents="_".join(parentsList)
+        if(len(parentsList)>1):
+            path = ImageCrop.AssemblePalsIcons(parentsList)
+        else:
+            path="./Icons/"+parentsList[0]+".png"
+        graph.node(str(id(way[i])),image="../Icons/"+way[i]+".png")
+        graph.node(parents+str(i),image="."+path)
+        graph.node(str(id(way[i+1])),image="../Icons/"+way[i+1]+".png")
+        graph.edge(parents+str(i),str(id(way[i+1])))
+        graph.edge(str(id(way[i])),str(id(way[i+1])))
+    graphPath=".\Trees\\"+way[0]+"_to_"+way[-1]+"_n_"+str(nbr)
+    graph.render(graphPath,format='png',cleanup=True,engine='dot',directory="./")
+    for i in listdir("./Temp"):
+        remove("./Temp/"+i)
+    return graphPath+".png"
+
 def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
-    jsonways={"way":ways[number-1],"length":len(ways)}
+    jsonways={"way":getShortestGraphs(ways[number-1],number-1)[1:],"length":len(ways)}
     return jsonways
