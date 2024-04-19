@@ -184,7 +184,6 @@ def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
     way=ways[number-1]
     res=[]
-    print(way)
     for palIndex in range(len(way)-1):
         res.append(way[palIndex],findParents(way[palIndex],way[palIndex+1]))
     res[way[-1]]=[]
