@@ -6,4 +6,4 @@ app = Flask(__name__)
 def start():
     return Graph.getJSONShortestWays("Frostallion","Frostallion")
 
-print(Graph.getJSONShortestWays("Frostallion","Lamball"))
+Graph.getJSONShortestWays("Frostallion","Lamball")
