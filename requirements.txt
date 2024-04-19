@@ -1,4 +1,4 @@
 Flask
 Gunicorn
-csv
+python-csv
 networkx
