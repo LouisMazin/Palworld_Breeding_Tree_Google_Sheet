@@ -7,7 +7,8 @@ def index():
     os.system('tar -xf download')
     os.system('rm download')
     os.system('mv graphviz-2.46.0 graphviz')
-    os.system('cd graphviz && ./configure && make && CPATH=[your_env]/include/python3.8 make install')
+    os.system('cd graphviz && ./configure && make && make install')
+    os.system('export PATH=$PATH:/usr/local/bin/graphviz/dot')
 @app.route('/getWays')
 def getWays():
     return Graph.getJSONShortestWays(request.args.get('parent'), request.args.get('child'),int(request.args.get('number')))
