@@ -1,7 +1,4 @@
 from networkx import all_shortest_paths, exception, DiGraph
-from graphviz import Digraph
-from os import remove,listdir
-import ImageCrop
 ##This file contains function to get the list of all shortests
 ##ways between two pals
 ##
@@ -183,31 +180,7 @@ def getShortestWays(parent : str, child : str):
         except exception.NetworkXNoPath:
             return []
 
-#function to create the graph corresponding to a way
-def getShortestGraphs(way : list,nbr : int):
-    if(len(way)==0):
-        return "./Icons/None.png"
-    graph=Digraph(node_attr={'shape': 'box','label' : ''})
-    graph.attr(ratio='1',fixedsize='true',size='9')
-    for i in range(len(way)-1):
-        parentsList=findParents(way[i],way[i+1])
-        parents="_".join(parentsList)
-        if(len(parentsList)>1):
-            path = ImageCrop.AssemblePalsIcons(parentsList)
-        else:
-            path="./Icons/"+parentsList[0]+".png"
-        graph.node(str(id(way[i])),image="./Icons/"+way[i]+".png")
-        graph.node(parents+str(i),image=path)
-        graph.node(str(id(way[i+1])),image="./Icons/"+way[i+1]+".png")
-        graph.edge(parents+str(i),str(id(way[i+1])))
-        graph.edge(str(id(way[i])),str(id(way[i+1])))
-    graph.render("tree",format='png',cleanup=True,engine='dot',directory="./")
-    for i in listdir("./"):
-        if i.endswith(".png") and i!="tree.png":
-            remove(i)
-    return "tree.png"
-
 def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
-    jsonways={"way":getShortestGraphs(ways[number-1],number-1)[1:],"length":len(ways)}
+    jsonways={"way":ways[number-1],"length":len(ways)}
     return jsonways
