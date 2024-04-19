@@ -3,3 +3,4 @@ Gunicorn
 networkx
 graphviz
 pillow
+python-dotenv
