@@ -2,7 +2,7 @@ from flask import Flask
 import Graph
 app = Flask(__name__)
 
-@app.route('/<string:source>/<string:destination>')
+@app.route('/')
 def start(*args):
     if(len(args) != 2):
         return "Invalid number of arguments"
