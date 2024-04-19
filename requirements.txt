@@ -3,4 +3,3 @@ Gunicorn
 networkx
 graphviz
 pillow
-os
