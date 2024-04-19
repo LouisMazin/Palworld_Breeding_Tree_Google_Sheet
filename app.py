@@ -6,3 +6,5 @@ app = Flask(__name__)
 def getWays():
     if request.args.get('number') != None:
         return Graph.getJSONShortestWays(request.args.get('parent'), request.args.get('child'),int(request.args.get('number')))
+
+print(Graph.getJSONShortestWays('Anubis', 'Anubis', 1))
