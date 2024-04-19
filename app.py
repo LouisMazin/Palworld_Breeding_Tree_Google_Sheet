@@ -4,6 +4,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def start():
-    return Graph.getJSONShortestWays("Frostallion","Frostallion")
-
-Graph.getJSONShortestWays("Frostallion","Lamball")
+    return Graph.getJSONShortestWays("Frostallion","Lamball")
