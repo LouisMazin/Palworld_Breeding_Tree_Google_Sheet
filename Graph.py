@@ -183,10 +183,10 @@ def getShortestWays(parent : str, child : str):
 def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
     way=ways[number-1]
-    res={}
+    res=[]
     print(way)
     for palIndex in range(len(way)-1):
-        res[way[palIndex]]=findParents(way[palIndex],way[palIndex+1])
+        res.append(way[palIndex],findParents(way[palIndex],way[palIndex+1]))
     res[way[-1]]=[]
     jsonways={"way":res,"length":len(ways)}
     return jsonways
