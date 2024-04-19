@@ -2,3 +2,5 @@ Flask
 Gunicorn
 networkx
 graphviz
+pillow
+os
