@@ -3,5 +3,5 @@ import Graph
 app = Flask(__name__)
 
 @app.route('/')
-def start():
-    return Graph.getJSONShortestWays("Frostallion","Lamball")
+def start(*args):
+    return Graph.getJSONShortestWays(args[0], args[1])
