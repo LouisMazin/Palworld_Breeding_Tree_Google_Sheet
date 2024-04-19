@@ -1,8 +1,7 @@
 from networkx import all_shortest_paths, exception, DiGraph
 from graphviz import Digraph
-from os import path,environ,remove,listdir
+from os import remove,listdir
 import ImageCrop
-environ["PATH"] += path.abspath(".\\Graphviz\\bin")+";"
 ##This file contains function to get the list of all shortests
 ##ways between two pals
 ##

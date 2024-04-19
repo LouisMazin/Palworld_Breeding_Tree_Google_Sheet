@@ -1,6 +1,4 @@
 from PIL import Image
-from os import path,environ
-environ["PATH"] += path.abspath(".\\Graphviz\\bin")+";"
 ##This file contains function to manipulate images
 ##
 ##It uses the Icons directory
