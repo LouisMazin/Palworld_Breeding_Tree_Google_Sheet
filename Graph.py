@@ -148,7 +148,6 @@ def getCsvContent(file : str):
     for row in reader:
         pals[row[0]]=row[1:]
     return pals
-print(getCsvContent("data.csv"))
 #function to get the graph of all the pals and their relations
 def getPalsGraph(csvContent : dict):
     G = DiGraph()
