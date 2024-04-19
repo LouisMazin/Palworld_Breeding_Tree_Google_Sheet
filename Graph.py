@@ -170,7 +170,6 @@ def findParents(pal : str, enfant : str):
     for childrenIndex in range(len(childrens)):
         if childrens[childrenIndex]==enfant:
             secondParents.append(palList[childrenIndex])
-    print(secondParents)
     return secondParents
 
 #function to get the shorstests ways between a parent and a child
@@ -198,16 +197,16 @@ def getShortestGraphs(way : list,nbr : int):
             path = ImageCrop.AssemblePalsIcons(parentsList)
         else:
             path="./Icons/"+parentsList[0]+".png"
-        graph.node(str(id(way[i])),image="../Icons/"+way[i]+".png")
-        graph.node(parents+str(i),image="."+path)
-        graph.node(str(id(way[i+1])),image="../Icons/"+way[i+1]+".png")
+        graph.node(str(id(way[i])),image="./Icons/"+way[i]+".png")
+        graph.node(parents+str(i),image=path)
+        graph.node(str(id(way[i+1])),image="./Icons/"+way[i+1]+".png")
         graph.edge(parents+str(i),str(id(way[i+1])))
         graph.edge(str(id(way[i])),str(id(way[i+1])))
-    graphPath=".\Trees\\"+way[0]+"_to_"+way[-1]+"_n_"+str(nbr)
-    graph.render(graphPath,format='png',cleanup=True,engine='dot',directory="./")
-    for i in listdir("./Temp"):
-        remove("./Temp/"+i)
-    return graphPath+".png"
+    graph.render("tree",format='png',cleanup=True,engine='dot',directory="./")
+    for i in listdir("./"):
+        if i.endswith(".png") and i!="tree.png":
+            remove(i)
+    return "tree.png"
 
 def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)

@@ -7,7 +7,7 @@ environ["PATH"] += path.abspath(".\\Graphviz\\bin")+";"
 
 #function to assemble icons in a single image
 def AssemblePalsIcons(palListe):
-    path="./Temp/"+"_".join(palListe)+".png"
+    path="./"+"_".join(palListe)+".png"
     images = [Image.open("./Icons/"+x+".png") for x in palListe]
     widths, heights = zip(*(i.size for i in images))
     totalWidth = sum(widths)
