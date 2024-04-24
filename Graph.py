@@ -182,6 +182,8 @@ def getShortestWays(parent : str, child : str):
 
 def getJSONShortestWays(parent : str, child : str,number : int):
     ways=getShortestWays(parent,child)
+    if(len(ways)==0):
+        return {"way":[],"length":0}
     way=ways[number-1]
     res=[]
     for palIndex in range(len(way)-1):
