@@ -1,6 +1,10 @@
-from flask import Flask, request
-import Graph,os
-app = Flask(__name__)
-@app.route('/getWays')
-def getWays():
-    return Graph.getJSONShortestWays(request.args.get('parent'), request.args.get('child'),int(request.args.get('number')))
+import Graph,sys
+
+parent = sys.argv[1]
+child = sys.argv[2]
+number = sys.argv[3]
+def main():
+    return Graph.getJSONShortestWays(parent, child,int(number))
+
+if __name__ == '__main__':
+    main()
