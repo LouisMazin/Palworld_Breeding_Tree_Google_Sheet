@@ -1,4 +1,6 @@
+print(6)
 from networkx import all_shortest_paths, exception, DiGraph
+print(7)
 ##This file contains function to get the list of all shortests
 ##ways between two pals
 ##
